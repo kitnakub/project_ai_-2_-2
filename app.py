@@ -62,9 +62,9 @@ div[data-testid="stSidebar"] .stButton button:focus {
 def nav(page): st.session_state.page = page
 
 with st.sidebar:
-    st.markdown("## 💻 Laptop & Mobile Price AI")
+    st.markdown("## Laptop & Mobile Price AI")
     st.markdown("---")
-    st.markdown("**🤖 Ensemble ML**")
+    st.markdown("** Ensemble ML**")
     if st.button("📖 อธิบาย Ensemble ML"):  nav("ml_explain")
     if st.button("🔍 ทดสอบ Ensemble ML"):   nav("ml_predict")
     st.markdown("---")
