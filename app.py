@@ -647,17 +647,6 @@ print("✅ Saved price_bins.pkl")
     # ─────────────────────────────────────────────────────
     st.subheader("7️⃣ แหล่งอ้างอิง")
     st.markdown("""
-**งานวิจัยต้นฉบับ:**
-1. Breiman, L. (2001). *Random Forests*. Machine Learning, 45(1), 5–32.
-2. Friedman, J.H. (2001). *Greedy Function Approximation: A Gradient Boosting Machine*. Annals of Statistics.
-3. Geurts, P., Ernst, D., & Wehenkel, L. (2006). *Extremely randomized trees*. Machine Learning, 63(1), 3–42.
-
-**เอกสาร scikit-learn:**
-4. [RandomForestRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html)
-5. [GradientBoostingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html)
-6. [ExtraTreesRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html)
-7. [VotingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingRegressor.html)
-
 **Dataset:**
 8. Laptop Price India Dataset — https://www.kaggle.com/datasets/jacksondivakarr/laptop-price-prediction-dataset
 """)
@@ -1218,7 +1207,14 @@ print("\n Done! Now run: streamlit run app.py")
     # ─────────────────────────────────────────────────────
     # ส่วนที่ 7: แหล่งอ้างอิง
     # ─────────────────────────────────────────────────────
-    st.subheader("7️⃣ โครงสร้าง Project (Neural Network)")
+    # 
+    st.subheader("7️⃣ เเหล่งอ้างอิง ")
+    st.markdown("""
+**Dataset:**
+8. Mobile Price Classification Dataset — https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification
+""")
+
+    st.subheader(" โครงสร้าง Project (Neural Network)")
 
     st.markdown("""
 <style>
