@@ -10,7 +10,6 @@ import joblib
 st.set_page_config(
     page_title="Laptop & Mobile Price AI",
     layout="centered",
-    page_icon="💻",
     initial_sidebar_state="expanded"
 )
 
@@ -68,7 +67,7 @@ with st.sidebar:
     if st.button("📖 อธิบาย Ensemble ML"):  nav("ml_explain")
     if st.button("🔍 ทดสอบ Ensemble ML"):   nav("ml_predict")
     st.markdown("---")
-    st.markdown("**🧠 Neural Network**")
+    st.markdown("** Neural Network**")
     if st.button("📖 อธิบาย Neural Network"): nav("nn_explain")
     if st.button("🔍 ทดสอบ Neural Network"):  nav("nn_predict")
 
