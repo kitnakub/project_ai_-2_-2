@@ -1,0 +1,6 @@
+{
+  "accuracy": 0.915,
+  "n_samples": 2000,
+  "n_features": 20,
+  "n_val": 400
+}
