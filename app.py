@@ -20,40 +20,445 @@ if "page" not in st.session_state:
     st.session_state.page = "ml_explain"
 
 # -------------------------------------------------------
-# CSS Sidebar
+# CSS Sidebar + Global UI Enhancement
 # -------------------------------------------------------
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+/* ── Root Variables ── */
+:root {
+    --bg-void:    #080810;
+    --bg-deep:    #0d0d1a;
+    --bg-card:    #111122;
+    --bg-hover:   #16162a;
+    --border-dim: #1e1e38;
+    --border-glow:#2e2e5a;
+    --accent-1:   #6c63ff;
+    --accent-2:   #00d4aa;
+    --accent-3:   #ff6b9d;
+    --text-hi:    #e8e8f8;
+    --text-mid:   #9898c8;
+    --text-lo:    #4a4a7a;
+    --font-mono:  'Space Mono', monospace;
+    --font-body:  'DM Sans', sans-serif;
+}
+
+/* ── Global App Background ── */
+.stApp {
+    background: var(--bg-void);
+    font-family: var(--font-body);
+}
+
+/* Hide Streamlit default header/footer */
+#MainMenu, footer, header { visibility: hidden; }
+
+/* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background: linear-gradient(160deg, #0f0f1a 0%, #1a1a2e 100%);
-    border-right: 1px solid #2a2a4a;
+    background: linear-gradient(180deg, #08080f 0%, #0a0a18 40%, #0d0d20 100%);
+    border-right: 1px solid var(--border-dim);
+    box-shadow: 4px 0 40px rgba(108,99,255,0.08);
 }
-[data-testid="stSidebar"] .stMarkdown p {
-    color: #8888bb;
-    font-size: 0.75rem;
-    letter-spacing: 0.10em;
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 2rem;
+}
+
+/* Sidebar brand */
+[data-testid="stSidebar"] h2 {
+    font-family: var(--font-mono) !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: var(--accent-1) !important;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem !important;
 }
+
+[data-testid="stSidebar"] .stMarkdown p {
+    font-family: var(--font-mono);
+    color: var(--text-lo);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0.8rem 0 0.3rem 0;
+}
+
+[data-testid="stSidebar"] hr {
+    border-color: var(--border-dim) !important;
+    margin: 0.8rem 0 !important;
+}
+
+/* Sidebar buttons */
 div[data-testid="stSidebar"] .stButton button {
     background: transparent;
-    border: none;
-    color: #ccccee;
+    border: 1px solid transparent;
+    color: var(--text-mid);
     text-align: left;
     width: 100%;
-    padding: 0.4rem 0.5rem;
-    font-size: 0.93rem;
+    padding: 0.55rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 400;
     cursor: pointer;
-    border-radius: 6px;
-    transition: background 0.2s;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    margin: 0.15rem 0;
+    letter-spacing: 0.01em;
 }
+
 div[data-testid="stSidebar"] .stButton button:hover {
-    background: rgba(255,255,255,0.07);
-    color: #ffffff;
+    background: rgba(108,99,255,0.12);
+    border-color: rgba(108,99,255,0.3);
+    color: var(--text-hi);
+    transform: translateX(3px);
 }
+
 div[data-testid="stSidebar"] .stButton button:focus {
-    box-shadow: none;
-    background: rgba(255,255,255,0.13);
-    color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(108,99,255,0.4);
+    background: rgba(108,99,255,0.15);
+    border-color: rgba(108,99,255,0.5);
+    color: #fff;
+}
+
+/* ── Main content area ── */
+.main .block-container {
+    padding: 2.5rem 2rem 3rem 2rem;
+    max-width: 860px;
+}
+
+/* ── Page Title (h1) ── */
+h1 {
+    font-family: var(--font-mono) !important;
+    font-size: 1.55rem !important;
+    font-weight: 700 !important;
+    color: var(--text-hi) !important;
+    letter-spacing: -0.01em;
+    line-height: 1.25 !important;
+    margin-bottom: 0.1rem !important;
+}
+
+h1::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    border-radius: 2px;
+    margin-top: 0.5rem;
+}
+
+/* ── Subheaders (h2, h3) ── */
+h2, h3 {
+    font-family: var(--font-body) !important;
+    color: var(--text-hi) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+}
+
+h2 { font-size: 1.15rem !important; margin-top: 2rem !important; }
+h3 { font-size: 1rem !important; }
+
+/* ── Caption / subtitle ── */
+[data-testid="stCaptionContainer"] p {
+    font-family: var(--font-body);
+    color: var(--text-lo) !important;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    margin-top: -0.2rem !important;
+}
+
+/* ── Divider ── */
+hr {
+    border: none !important;
+    border-top: 1px solid var(--border-dim) !important;
+    margin: 1.5rem 0 !important;
+}
+
+/* ── Markdown body text ── */
+.stMarkdown p, .stMarkdown li {
+    font-family: var(--font-body);
+    color: var(--text-mid);
+    font-size: 0.88rem;
+    line-height: 1.75;
+}
+
+.stMarkdown strong {
+    color: var(--text-hi);
+    font-weight: 600;
+}
+
+.stMarkdown a {
+    color: var(--accent-1);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(108,99,255,0.35);
+    transition: border-color 0.2s;
+}
+.stMarkdown a:hover { border-color: var(--accent-1); }
+
+/* ── Metrics ── */
+[data-testid="stMetric"] {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    border-radius: 12px;
+    padding: 1rem 1.1rem 0.9rem !important;
+    transition: border-color 0.2s;
+}
+[data-testid="stMetric"]:hover {
+    border-color: var(--border-glow);
+}
+[data-testid="stMetricLabel"] {
+    font-family: var(--font-mono) !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-lo) !important;
+}
+[data-testid="stMetricValue"] {
+    font-family: var(--font-mono) !important;
+    font-size: 1.4rem !important;
+    color: var(--text-hi) !important;
+    font-weight: 700 !important;
+}
+[data-testid="stMetricDelta"] {
+    font-family: var(--font-body) !important;
+    font-size: 0.72rem !important;
+    color: var(--accent-2) !important;
+}
+
+/* ── Dataframe / Table ── */
+[data-testid="stDataFrame"] {
+    border: 1px solid var(--border-dim) !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+    background: var(--bg-card) !important;
+}
+[data-testid="stDataFrame"] table {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+}
+[data-testid="stDataFrame"] thead th {
+    background: var(--bg-deep) !important;
+    color: var(--text-mid) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-glow) !important;
+}
+[data-testid="stDataFrame"] tbody td {
+    color: var(--text-mid) !important;
+    border-bottom: 1px solid var(--border-dim) !important;
+}
+[data-testid="stDataFrame"] tbody tr:hover td {
+    background: var(--bg-hover) !important;
+    color: var(--text-hi) !important;
+}
+
+/* ── Select boxes ── */
+[data-testid="stSelectbox"] > div > div {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-dim) !important;
+    border-radius: 8px !important;
+    color: var(--text-hi) !important;
+    font-family: var(--font-body) !important;
+    font-size: 0.87rem !important;
+    transition: border-color 0.2s;
+}
+[data-testid="stSelectbox"] > div > div:hover,
+[data-testid="stSelectbox"] > div > div:focus-within {
+    border-color: var(--accent-1) !important;
+    box-shadow: 0 0 0 3px rgba(108,99,255,0.15) !important;
+}
+
+[data-testid="stSelectbox"] label,
+[data-testid="stSlider"] label {
+    font-family: var(--font-body) !important;
+    font-size: 0.8rem !important;
+    color: var(--text-mid) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em;
+}
+
+/* Dropdown popup */
+[data-testid="stSelectbox"] ul {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-glow) !important;
+    border-radius: 8px !important;
+}
+[data-testid="stSelectbox"] ul li:hover {
+    background: rgba(108,99,255,0.15) !important;
+}
+
+/* ── Sliders ── */
+[data-testid="stSlider"] > div > div > div {
+    background: var(--border-glow) !important;
+}
+[data-testid="stSlider"] > div > div > div > div {
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2)) !important;
+}
+[data-testid="stSlider"] > div > div > div > div > div {
+    background: var(--accent-1) !important;
+    border: 2px solid var(--bg-void) !important;
+    box-shadow: 0 0 8px rgba(108,99,255,0.5) !important;
+}
+[data-testid="stSlider"] [data-testid="stTickBarMin"],
+[data-testid="stSlider"] [data-testid="stTickBarMax"] {
+    color: var(--text-lo) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.65rem !important;
+}
+
+/* ── Buttons ── */
+.stButton > button {
+    font-family: var(--font-body) !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+    letter-spacing: 0.02em;
+}
+
+/* Primary button */
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent-1) 0%, #5a52f0 100%) !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: 0 4px 20px rgba(108,99,255,0.35) !important;
+}
+.stButton > button[kind="primary"]:hover {
+    box-shadow: 0 6px 28px rgba(108,99,255,0.55) !important;
+    transform: translateY(-1px) !important;
+}
+.stButton > button[kind="primary"]:active {
+    transform: translateY(0) !important;
+}
+
+/* Secondary button */
+.stButton > button:not([kind="primary"]) {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-glow) !important;
+    color: var(--text-mid) !important;
+}
+.stButton > button:not([kind="primary"]):hover {
+    border-color: var(--accent-1) !important;
+    color: var(--text-hi) !important;
+    background: rgba(108,99,255,0.1) !important;
+}
+
+/* ── Alerts: success / warning / info / error ── */
+[data-testid="stAlert"] {
+    border-radius: 10px !important;
+    border-width: 1px !important;
+    font-family: var(--font-body) !important;
+    font-size: 0.87rem !important;
+}
+
+.stSuccess {
+    background: rgba(0,212,170,0.08) !important;
+    border-color: rgba(0,212,170,0.3) !important;
+    color: #00d4aa !important;
+}
+
+.stWarning {
+    background: rgba(255,180,0,0.08) !important;
+    border-color: rgba(255,180,0,0.3) !important;
+}
+
+.stInfo {
+    background: rgba(108,99,255,0.08) !important;
+    border-color: rgba(108,99,255,0.3) !important;
+}
+
+.stError {
+    background: rgba(255,107,157,0.08) !important;
+    border-color: rgba(255,107,157,0.3) !important;
+}
+
+/* ── Code blocks ── */
+.stCodeBlock {
+    border-radius: 10px !important;
+    border: 1px solid var(--border-dim) !important;
+    overflow: hidden;
+}
+.stCodeBlock code {
+    font-family: var(--font-mono) !important;
+    font-size: 0.78rem !important;
+    line-height: 1.7 !important;
+}
+pre {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-dim) !important;
+    border-radius: 10px !important;
+}
+
+/* ── Expanders ── */
+[data-testid="stExpander"] {
+    border: 1px solid var(--border-dim) !important;
+    border-radius: 10px !important;
+    background: var(--bg-card) !important;
+    overflow: hidden;
+    margin: 0.4rem 0 !important;
+    transition: border-color 0.2s;
+}
+[data-testid="stExpander"]:hover {
+    border-color: var(--border-glow) !important;
+}
+[data-testid="stExpander"] summary {
+    font-family: var(--font-body) !important;
+    font-size: 0.87rem !important;
+    font-weight: 600 !important;
+    color: var(--text-hi) !important;
+    padding: 0.9rem 1.1rem !important;
+}
+[data-testid="stExpander"] summary:hover {
+    color: var(--accent-1) !important;
+}
+[data-testid="stExpander"] > div > div {
+    padding: 0 1.1rem 1rem 1.1rem !important;
+}
+
+/* ── Toggles (checkboxes) ── */
+[data-testid="stCheckbox"] label,
+.stToggle label {
+    font-family: var(--font-body) !important;
+    font-size: 0.83rem !important;
+    color: var(--text-mid) !important;
+}
+
+/* ── Caption text below widgets ── */
+.stCaption {
+    color: var(--text-lo) !important;
+    font-size: 0.72rem !important;
+    font-family: var(--font-body) !important;
+    letter-spacing: 0.01em;
+}
+
+/* ── Column containers ── */
+[data-testid="column"] {
+    gap: 0.6rem;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--border-glow); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-1); }
+
+/* ── Section header pill (for custom HTML) ── */
+.section-label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-1);
+    background: rgba(108,99,255,0.12);
+    border: 1px solid rgba(108,99,255,0.25);
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
 }
 </style>
 """, unsafe_allow_html=True)
